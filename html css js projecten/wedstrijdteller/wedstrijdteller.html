@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+  <title>teller</title>
+  <link rel="stylesheet" href="wedstrijdteller.css">
+</head>
+<body>
+  <h1>Wedstrijd score</h1>
+  <div id="setUitslagen">Set Uitslagen: 0 - 0</div>
+  <div id="matchWinnerMessage">wie gaat winnen?</div>
+  <div id="input_teams">
+    <p>
+      <label>Team 1: </label>
+      <input id="inputTeam1">
+      begint
+      <input id="servingTeam1" name="servingTeam" value="1" type="radio">
+    </p>
+    <p>
+      <label>Team 2: </label>
+      <input id="inputTeam2">
+      begint
+      <input id="servingTeam2" name="servingTeam" value="2" type="radio">
+    </p>
+    <button id="startButton">Start de wedstrijd</button>
+  </div>
+  <div id="counters">
+    <div id="displayTeam1" class="team">
+        <button id="nameTeam1" class="team-name">...</button>
+        <button id="counterTeam1" class="team-counter">0</button>
+    </div>
+    <div id="displayTeam2" class="team">
+      <button id="nameTeam2" class="team-name">...</button>
+      <button id="counterTeam2" class="team-counter">0</button>
+    </div>
+  </div>
+  <button id="undoButton">Annuleer</button>
+  <script src="wedstrijdteller.js"></script>
+</body>
+</html>

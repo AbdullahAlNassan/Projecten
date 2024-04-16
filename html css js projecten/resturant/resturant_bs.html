@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S restaurant</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        .card {
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        #messageContainer {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">ONZE GERECHTEN</h1>
+        <div id="app"></div>
+        <div id="messageContainer"></div>
+        <script>
+            let maxRondes = 6;
+            let huidigeRondes = maxRondes;
+            let totaalBestellingen = 0;
+            let bestellingenPerRonde = 0;
+            let menu = {
+                "Shawarma": {image: "https://pngimg.es/d/shawarma_PNG46.png"},
+                "rijst": {image: "https://th.bing.com/th/id/R.8d35d8e2ffe791d7e49ad5a7a192dce7?rik=blvAGXDWrgIJnw&pid=ImgRaw&r=0"},
+                "Salade": {image: "https://pluspng.com/img-png/salad-png-download-png-image-salad-png-hd-1200.png"},
+                "Burger": {image: "https://www.pngmart.com/files/16/Double-Cheese-Burger-Transparent-PNG.png"},
+                "Friet": {image: "https://www.pngall.com/wp-content/uploads/4/French-Fries-PNG-Image-1.png"}
+            };
+
+            function bestel(item) {
+                let quantity = parseInt(document.getElementById(item).value);
+                if (quantity >= 1 && (bestellingenPerRonde + quantity) <= 12 && huidigeRondes > 0) {
+                    totaalBestellingen += quantity;
+                    bestellingenPerRonde += quantity;
+                    updateApp();
+                } else {
+                    showMessage("Je kunt maximaal 12 items per ronde bestellen.");
+                }
+            }
+
+            function rondeKlaar() {
+                if (huidigeRondes > 0 && bestellingenPerRonde >= 6) {
+                    huidigeRondes--;
+                    totaalBestellingen = 0;
+                    bestellingenPerRonde = 0;
+                    updateApp();
+                    if (huidigeRondes == 0) {
+                        alert("Alle rondes zijn voltooid!");
+                    }
+                } else {
+                    showMessage("Je moet minimaal 6 items bestellen om de ronde af te sluiten.");
+                }
+            }
+
+            function updateApp() {
+                let app = document.getElementById('app');
+                app.innerHTML = '';
+                for (let item in menu) {
+                    let div = document.createElement('div');
+                    div.classList.add('card', 'mb-3');
+                    div.innerHTML = `
+                        <div class="card-body">
+                            <h5 class="card-title">${item}</h5>
+                            <img src="${menu[item].image}" alt="${item}" class="img-fluid mb-2" style="max-height: 150px;">
+                            <label for="${item}">Aantal:</label>
+                            <input type="number" id="${item}" class="form-control mb-2" min="0" value="0">
+                            <button class="btn btn-primary" onclick="bestel('${item}')">Bestel</button>
+                        </div>
+                    `;
+                    app.appendChild(div);
+                }
+                app.innerHTML += `
+                    <div class="mt-4">
+                        <h5>Rondes over: ${huidigeRondes}</h5>
+                        <h5>Totaal bestellingen: ${totaalBestellingen}</h5>
+                        <h5>Bestellingen deze ronde: ${bestellingenPerRonde}</h5>
+                        <button class="btn btn-success" onclick="rondeKlaar()" ${huidigeRondes === 0 ? 'disabled' : ''}>Uw bestelling indiennen</button>
+                    </div>
+                `;
+                let messageContainer = document.getElementById('messageContainer');
+                messageContainer.innerHTML = '';
+            }
+
+            function showMessage(message) {
+                let messageContainer = document.getElementById('messageContainer');
+                messageContainer.innerHTML = `<p class="alert alert-danger">${message}</p>`;
+            }
+
+            updateApp();
+        </script>
+    </div>
+</body>
+</html>
