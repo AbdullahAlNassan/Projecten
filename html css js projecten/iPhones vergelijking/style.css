@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+header{
+    background-color: black;
+    top: 0;
+    width: 100%; /*hele breedte beschikbaar van de header*/
+    display: flex; /*uitleg*/
+    align-items: center;
+    padding: 10px 100px; /*wordt de header inhoud beetje naar tussen gebracht*/
+
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+section{
+    padding: 100px 200px;
+}
+
+.page2 {
+    padding-top: 200px;
+}
+
+.title {
+    text-align: center;
+    color: white;
+    padding-left: 30px;
+}
+
+.homeTitle {
+    text-align: center;
+    font-size: 50px;
+    padding-top: 200px;
+    padding-bottom: 200px;
+    animation-name: fadeInUp;
+    animation-duration: 1s;
+    animation-delay: 0.5s; /* Vertraging van 0.5 seconden voordat de animatie begint */
+    animation-fill-mode: forwards; /* Houd de stijl van het laatste frame van de animatie vast */
+    opacity: 0; /* Begin met een onzichtbare tekst */
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px); /* Verschuif de tekst naar beneden met 50px */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Terug naar de oorspronkelijke positie */
+    }
+}
+
+.homeText {
+    text-align: center;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    font-size: 30px;
+}
+
+.scroll-button {
+    color: white;
+    padding: 17px 40px;
+    border-radius: 50px;
+    cursor: pointer;
+    border: 0;
+    background-color: rgb(0, 0, 0);
+    box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-size: 15px;
+    transition: all 0.5s ease;
+    text-align: center;
+    position: absolute; /* Zorgt ervoor dat de knop een absolute positie heeft */
+    left: 50%; /* Plaatst de knop horizontaal in het midden van het scherm */
+    bottom: 20px; /* Plaatst de knop 20px vanaf de onderkant van het scherm */
+    transform: translateX(-50%);
+}
+
+.scroll-button:hover {
+    background-color: hsl(0, 1%, 42%);
+    color: hsl(0, 0%, 100%);
+    box-shadow: rgb(0, 0, 0) 0px 7px 29px 0px;
+}
+
+
+.myName {
+    color: white;
+    padding-left: 820px;
+}
+
+.apple-logo {
+    width: 40px; /* Pas dit aan aan de gewenste grootte van het logo */
+    height: auto; /* Zorgt ervoor dat de hoogte proportioneel wordt aangepast */
+    margin-right: 10px; /* Ruimte tussen het logo en de titel */
+    color: #ccc;
+}
+
+
+.select-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 20px;
+}
+
+.select-box {
+    width: calc(50% - 10px); /* 50% van de containerbreedte met ruimte tussen de velden */
+    padding: 15px;
+    border: 1px solid #0b0b0b;
+    border-radius: 10px;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.label-description {
+    text-align: center; /* Centreert de tekst */
+    margin-bottom: 10px; /* Voegt wat ruimte onder het label toe */
+    white-space: nowrap; /* Voorkomt dat de tekst wordt afgebroken */
+    background-color: black;
+    color: white;
+    font-size: 1em;
+    font-weight: 400;
+    display: inline-block;
+    padding: 0.6em 1em;
+    border-radius: 5px; /*maakt de hoeken van de knop beetje rond*/
+}
+
+.select-item {
+    display: flex;
+    align-items: center; /* Centreert de inhoud verticaal */
+}
+
+.iphone-image {
+    width: 50px; /* Pas dit aan aan de gewenste grootte van de afbeelding */
+    margin-left: 10px; /* Voegt wat ruimte toe tussen de afbeelding en het select-veld */
+}
+
+
+
+.comparison-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 48%;
+}
+
+.card .card-body {
+    padding: 20px;
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+.card p {
+    margin: 10px 0;
+}
