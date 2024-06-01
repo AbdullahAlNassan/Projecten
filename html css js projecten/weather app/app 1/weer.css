@@ -1,0 +1,50 @@
+.container {
+    height: 290px;
+    width: 250px;
+    border: 3px solid yellow;
+    padding: 20px;
+    border-radius: 2%;
+    text-align: center;
+}
+
+#place {
+    font-size: 3 rem;
+    font-weight: 800;
+    font-style: italic;
+}
+
+.desc {
+    font-size: 1.25rem;
+    text-transform: capitalize;
+    margin: 5px;
+}
+
+#weatherIcon {
+    width: 50px; /* breedte van de afbeelding */
+    height: 50px; /* hoogte van de afbeelding */
+    background-size: contain; /* zorg ervoor dat de afbeelding volledig in het element past */
+}
+
+
+.container input{
+    border: 0;
+    outline: 0;
+    background: #ebfffc;
+    color: #555;
+    padding: 10px 15px;
+    height: 30px;
+    border-radius: 30px;
+    flex: 1;
+    margin-right: 16px;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.container button{
+    border: 0;
+    outline: 0;
+    background: #538fff;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 30px;
+}
