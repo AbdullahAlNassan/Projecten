@@ -1,6 +1,33 @@
+import requests
+from bs4 import BeautifulSoup  
 import sqlite3
 from datetime import datetime
-from script import *
+
+# Function to scrape board game data
+def scrape_board_games(url):
+    html = requests.get(url)  
+    soup = BeautifulSoup(html.content, 'html.parser')  
+    results_container = soup.find(id='collection')  
+    games_list = []
+
+    game_rows = results_container.find_all('tr', id=lambda x: x and x.startswith('row_'))  
+
+    for row in game_rows:  
+        rank = row.find('td', class_='collection_rank').text.strip()  
+        title = row.find('a', class_='primary').text.strip()  
+        games_info = {
+            'title': title,
+            'rank': rank
+        }
+        games_list.append(games_info)
+
+    return games_list
+
+# URL of the webpage to scrape
+url = 'https://boardgamegeek.com/browse/boardgame'
+
+# Scrape board game data
+games_list = scrape_board_games(url)
 
 # Database
 
