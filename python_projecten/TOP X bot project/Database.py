@@ -1,47 +1,73 @@
 import sqlite3
-from datetime import datetime
-from script import *
 
-# Database
+def create_database():
+    conn = sqlite3.connect('boardgames.db')
+    cursor = conn.cursor()
 
-# Maak een nieuwe SQLite-databaseverbinding
-conn = sqlite3.connect('boardgames.db')
+    # Create visit table
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS visit (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        collected_on TEXT,
+        url TEXT
+    )
+    ''')
 
-# Creëer een cursorobject om query's uit te voeren
-cursor = conn.cursor()
+    # Create visit_item table
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS visit_item (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        visit_id INTEGER,
+        name TEXT,
+        rank INTEGER,
+        FOREIGN KEY(visit_id) REFERENCES visit(id)
+    )
+    ''')
 
-# Creëer een tabel om de spelinformatie op te slaan
-cursor.execute('''CREATE TABLE IF NOT EXISTS boardgames
-                  (title TEXT, rank INTEGER)''')
+    # Create visit_item_info table
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS visit_item_info (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        visit_item_id INTEGER,
+        key TEXT,
+        value TEXT,
+        FOREIGN KEY(visit_item_id) REFERENCES visit_item(id)
+    )
+    ''')
 
-# Lus door elk spel in de lijst en voeg het toe aan de database
-for game in games_list:
-    cursor.execute("INSERT INTO boardgames (title, rank) VALUES (?, ?)", (game['title'], game['rank']))
+    conn.commit()
+    conn.close()
 
-# Creëer een tabel om de bezoekinformatie op te slaan
-cursor.execute('''CREATE TABLE IF NOT EXISTS visits
-                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                   collected_on TEXT,
-                   url TEXT)''')
+def insert_visit(collected_on, url):
+    conn = sqlite3.connect('boardgames.db')
+    cursor = conn.cursor()
 
-# Voeg informatie over het bezoek toe aan de tabel
-collected_on = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Huidige datum en tijd
-cursor.execute("INSERT INTO visits (collected_on, url) VALUES (?, ?)", (collected_on, url))
+    cursor.execute('INSERT INTO visit (collected_on, url) VALUES (?, ?)', (collected_on, url))
+    visit_id = cursor.lastrowid
 
-# Haal het id op van het laatst toegevoegde record in de visits tabel
-visit_id = cursor.lastrowid
+    conn.commit()
+    conn.close()
+    
+    return visit_id
 
-# Creëer een tabel om de items van het bezoek op te slaan
-cursor.execute('''CREATE TABLE IF NOT EXISTS visit_items
-                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                   visit_id INTEGER,
-                   name TEXT,
-                   rank INTEGER)''')
+def insert_visit_items(visit_items):
+    conn = sqlite3.connect('boardgames.db')
+    cursor = conn.cursor()
 
-# Voeg elk item uit games_list toe aan de visit_items tabel met het juiste visit_id
-for game in games_list:
-    cursor.execute("INSERT INTO visit_items (visit_id, name, rank) VALUES (?, ?, ?)", (visit_id, game['title'], game['rank']))
+    cursor.executemany('INSERT INTO visit_item (visit_id, name, rank) VALUES (?, ?, ?)', visit_items)
+    conn.commit()
+    
+    cursor.execute('SELECT id FROM visit_item ORDER BY id DESC LIMIT ?', (len(visit_items),))
+    item_ids = cursor.fetchall()
+    
+    conn.close()
+    return [item_id[0] for item_id in item_ids]
 
-# Commit de wijzigingen en sluit de verbinding
-conn.commit()
-conn.close()
+def insert_visit_item_info(visit_item_info):
+    conn = sqlite3.connect('boardgames.db')
+    cursor = conn.cursor()
+
+    cursor.executemany('INSERT INTO visit_item_info (visit_item_id, key, value) VALUES (?, ?, ?)', visit_item_info)
+
+    conn.commit()
+    conn.close()
