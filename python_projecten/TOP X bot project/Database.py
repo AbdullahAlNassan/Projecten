@@ -1,8 +1,11 @@
-import sqlite3  # Importeert de sqlite3 module om met SQLite-databases te werken
+import sqlite3
+
+
 
 def create_database():
-    conn = sqlite3.connect('boardgames.db')  # Verbindt met (of maakt) de database 'boardgames.db'
-    cursor = conn.cursor()  # Maakt een cursor object om SQL queries uit te voeren
+    # Maak verbinding met de SQLite-database en maak de vereiste tabellen aan
+    conn = sqlite3.connect('boardgames.db')
+    cursor = conn.cursor() 
     cursor.executescript('''
         CREATE TABLE IF NOT EXISTS visit (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,39 +31,46 @@ def create_database():
             title TEXT,
             rank INTEGER
         );
-    ''')  # Voert een SQL script uit om de tabellen te maken, indien ze nog niet bestaan
-    conn.commit()  # Slaat de wijzigingen op in de database
-    conn.close()  # Sluit de database verbinding
+    ''')  
+    conn.commit()  # Sla de wijzigingen op
+    conn.close()  # Sluit de verbinding
 
 def insert_visit(collected_on, url):
-    conn = sqlite3.connect('boardgames.db')  # Verbindt met de database 'boardgames.db'
-    cursor = conn.cursor()  # Maakt een cursor object om SQL queries uit te voeren
-    cursor.execute('INSERT INTO visit (collected_on, url) VALUES (?, ?)', (collected_on, url))  # Voert een SQL query uit om een record toe te voegen aan de 'visit' tabel
-    visit_id = cursor.lastrowid  # Haalt het id op van het laatste ingevoegde record
-    conn.commit()  # Slaat de wijzigingen op in de database
-    conn.close()  # Sluit de database verbinding
-    return visit_id  # Geeft het visit_id terug
+    # Voeg een record toe aan de 'visit' tabel
+    conn = sqlite3.connect('boardgames.db') 
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO visit (collected_on, url) VALUES (?, ?)', (collected_on, url))
+    visit_id = cursor.lastrowid  # Haal het ID van het laatste toegevoegde record op
+    conn.commit()  # Sla de wijzigingen op
+    conn.close()  # Sluit de verbinding
+    return visit_id
 
 def insert_visit_items(visit_items):
-    conn = sqlite3.connect('boardgames.db')  # Verbindt met de database 'boardgames.db'
-    cursor = conn.cursor()  # Maakt een cursor object om SQL queries uit te voeren
-    cursor.executemany('INSERT INTO visit_item (visit_id, name, rank) VALUES (?, ?, ?)', visit_items)  # Voert een SQL query uit om meerdere records toe te voegen aan de 'visit_item' tabel
-    conn.commit()  # Slaat de wijzigingen op in de database
-    cursor.execute('SELECT id FROM visit_item ORDER BY id DESC LIMIT ?', (len(visit_items),))  # Voert een SQL query uit om de laatst toegevoegde item_ids op te halen
-    item_ids = [item_id[0] for item_id in cursor.fetchall()]  # Maakt een lijst van de opgehaalde item_ids
-    conn.close()  # Sluit de database verbinding
-    return item_ids  # Geeft de item_ids terug
+    # Voeg meerdere records toe aan de 'visit_item' tabel
+    conn = sqlite3.connect('boardgames.db') 
+    cursor = conn.cursor() 
+    cursor.executemany('INSERT INTO visit_item (visit_id, name, rank) VALUES (?, ?, ?)', visit_items) 
+    conn.commit()  # Sla de wijzigingen op
+    cursor.execute('SELECT id FROM visit_item ORDER BY id DESC LIMIT ?', (len(visit_items),))
+    item_ids = [item_id[0] for item_id in cursor.fetchall()]  # Haal de IDs van de toegevoegde records op
+    conn.close()  # Sluit de verbinding
+    return item_ids
 
 def insert_visit_item_info(visit_item_info):
-    conn = sqlite3.connect('boardgames.db')  # Verbindt met de database 'boardgames.db'
-    cursor = conn.cursor()  # Maakt een cursor object om SQL queries uit te voeren
-    cursor.executemany('INSERT INTO visit_item_info (visit_item_id, key, value) VALUES (?, ?, ?)', visit_item_info)  # Voert een SQL query uit om meerdere records toe te voegen aan de 'visit_item_info' tabel
-    conn.commit()  # Slaat de wijzigingen op in de database
-    conn.close()  # Sluit de database verbinding
+    # Voeg meerdere records toe aan de 'visit_item_info' tabel
+    conn = sqlite3.connect('boardgames.db') 
+    cursor = conn.cursor()  
+    cursor.executemany('INSERT INTO visit_item_info (visit_item_id, key, value) VALUES (?, ?, ?)', visit_item_info)  
+    conn.commit()  # Sla de wijzigingen op
+    conn.close()  # Sluit de verbinding
 
 def insert_boardgames(boardgames):
-    conn = sqlite3.connect('boardgames.db')  # Verbindt met de database 'boardgames.db'
-    cursor = conn.cursor()  # Maakt een cursor object om SQL queries uit te voeren
-    cursor.executemany('INSERT INTO boardgame (title, rank) VALUES (?, ?)', boardgames)  # Voert een SQL query uit om meerdere records toe te voegen aan de 'boardgame' tabel
-    conn.commit()  # Slaat de wijzigingen op in de database
-    conn.close()  # Sluit de database verbinding
+    # Voeg meerdere records toe aan de 'boardgame' tabel
+    conn = sqlite3.connect('boardgames.db')  
+    cursor = conn.cursor()  
+    cursor.executemany('INSERT INTO boardgame (title, rank) VALUES (?, ?)', boardgames)  
+    conn.commit()  # Sla de wijzigingen op
+    conn.close()  # Sluit de verbinding
+
+
+    
