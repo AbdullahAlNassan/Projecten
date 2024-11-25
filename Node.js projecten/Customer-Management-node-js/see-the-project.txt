@@ -1,3 +1,0 @@
-Project link:
-
-https://customer-management-nodejs.onrender.com
