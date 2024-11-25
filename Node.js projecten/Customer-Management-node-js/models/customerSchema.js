@@ -12,8 +12,20 @@ const userSchema = new Schema({
   gender: String,
 }, { timestamps: true });
 
+const loginSchema = new Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  }
+})
+
 // Create a model based on that schema
 const User = mongoose.model("customer", userSchema);
+const login = mongoose.model("login", loginSchema);
 
 // export the model
-module.exports = User;
+module.exports = {User, login};
